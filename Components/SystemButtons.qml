@@ -28,17 +28,16 @@ import QtQuick.Controls 2.4
 
 RowLayout {
 
+    property var suspend: ["Suspend", config.TranslateSuspend || textConstants.suspend, true] // sddm.canSuspend
+    property var hibernate: ["Hibernate", config.TranslateHibernate || textConstants.hibernate, true] // sddm.canHibernate
+    property var reboot: ["Reboot", config.TranslateReboot || textConstants.reboot, true] // sddm.canReboot
+    property var shutdown: ["Shutdown", config.TranslateShutdown || textConstants.shutdown, true] // sddm.canPowerOff
+
+    property ComboBox exposedSession
+
     spacing: root.font.pointSize
 
-    property var suspend: ["Suspend", config.TranslateSuspend || textConstants.suspend, sddm.canSuspend]
-    property var hibernate: ["Hibernate", config.TranslateHibernate || textConstants.hibernate, sddm.canHibernate]
-    property var reboot: ["Reboot", config.TranslateReboot || textConstants.reboot, sddm.canReboot]
-    property var shutdown: ["Shutdown", config.TranslateShutdown || textConstants.shutdown, sddm.canPowerOff]
-
-    property Control exposedSession
-
     Repeater {
-
         id: systemButtons
         model: [suspend, hibernate, reboot, shutdown]
 
@@ -61,13 +60,16 @@ RowLayout {
                 border.color: "transparent"
                 anchors.top: parent.bottom
             }
-            Keys.onReturnPressed: clicked()
+
             onClicked: {
                 parent.forceActiveFocus()
                 index == 0 ? sddm.suspend() : index == 1 ? sddm.hibernate() : index == 2 ? sddm.reboot() : sddm.powerOff()
             }
+
+            Keys.onReturnPressed: clicked()
+
             KeyNavigation.up: exposedSession
-            KeyNavigation.left: parent.children[index-1]
+            KeyNavigation.left: parent.children[index-1] ?? null
 
             states: [
                 State {
@@ -116,9 +118,6 @@ RowLayout {
                     }
                 }
             ]
-
         }
-
     }
-
 }

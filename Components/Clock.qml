@@ -28,35 +28,76 @@ import QtQuick.Controls 2.4
 Column {
     id: clock
     spacing: 0
-    width: parent.width / 2
-
-    Label {
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.pointSize: config.HeaderText !=="" ? root.font.pointSize * 3 : 0
-        color: root.palette.text
-        renderType: Text.QtRendering
-        text: config.HeaderText
-    }
+    states: [
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: clock
+                anchors.rightMargin: 0
+                opacity: 1
+            }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: clock
+                anchors.rightMargin: root.width / 3
+                opacity: 0
+            }
+        }
+    ]
+    transitions: [
+        Transition {
+            to: "hidden"
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation { properties: "anchors.rightMargin"; duration: 300; easing.type: Easing.InCubic }
+                NumberAnimation { properties: "opacity"; duration: 200; easing.type: Easing.InQuad }
+            }
+        }
+    ]
 
     Label {
         id: timeLabel
+
+        function updateTime() {
+            text = new Date()
+                .toLocaleTimeString(
+                     Qt.locale(config.Locale),
+                     config.HourFormat == "long"
+                        ? Locale.LongFormat
+                        : config.HourFormat !== ""
+                            ? config.HourFormat
+                            : Locale.ShortFormat
+                )
+        }
+
         anchors.horizontalCenter: parent.horizontalCenter
-        font.pointSize: root.font.pointSize * 3
+        font.pointSize: root.font.pointSize * 5
         color: root.palette.text
         renderType: Text.QtRendering
-        function updateTime() {
-            text = new Date().toLocaleTimeString(Qt.locale(config.Locale), config.HourFormat == "long" ? Locale.LongFormat : config.HourFormat !== "" ? config.HourFormat : Locale.ShortFormat)
-        }
+
     }
 
     Label {
         id: dateLabel
+
+        function updateTime() {
+            text = new Date()
+                .toLocaleDateString(
+                     Qt.locale(config.Locale),
+                     config.DateFormat == "short"
+                        ? Locale.ShortFormat
+                        : config.DateFormat !== ""
+                            ? config.DateFormat
+                            : Locale.LongFormat
+                )
+        }
+
         anchors.horizontalCenter: parent.horizontalCenter
         color: root.palette.text
         renderType: Text.QtRendering
-        function updateTime() {
-            text = new Date().toLocaleDateString(Qt.locale(config.Locale), config.DateFormat == "short" ? Locale.ShortFormat : config.DateFormat !== "" ? config.DateFormat : Locale.LongFormat)
-        }
+
     }
 
     Timer {
