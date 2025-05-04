@@ -22,10 +22,10 @@
 // along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
 //
 
-import QtQuick 2.11
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Controls
+
+import Qt5Compat.GraphicalEffects
 
 import SddmComponents 2.0 as SDDM
 
@@ -39,10 +39,10 @@ Pane {
     /* 1. See into SystemButtons issue (sddm not showing them as available).
         Need to in live env to make sure it's not a cli command issue.
 
-    /* 2. ctrl + x/c doesn't work specifically in Password field. It should work out of the box.
+    /* 2. ✅ ctrl + x/c doesn't work specifically in Password field. It should work out of the box.
         Something is eating inputs there.
 
-    /* 3. Password placeholder text has a larger font size than user field.
+    /* 3. ✅ Password placeholder text has a larger font size than user field.
 
     /* 4. Find better svg icons for SystemButton. Current ones are ugly and
         unreadable without labels.
@@ -59,36 +59,36 @@ Pane {
     readonly property url assetsURL: Qt.resolvedUrl("./Assets")
 
 
-    readonly property bool leftleft: config.HaveFormBackground == "true" &&
-                            config.PartialBlur == "false" &&
-                            config.FormPosition == "left" &&
-                            config.BackgroundImageHAlignment == "left"
+    readonly property bool leftleft: config.HaveFormBackground === "true" &&
+                            config.PartialBlur === "false" &&
+                            config.FormPosition === "left" &&
+                            config.BackgroundImageHAlignment === "left"
 
-    readonly property bool leftcenter: config.HaveFormBackground == "true" &&
-                              config.PartialBlur == "false" &&
-                              config.FormPosition == "left" &&
-                              config.BackgroundImageHAlignment == "center"
+    readonly property bool leftcenter: config.HaveFormBackground === "true" &&
+                              config.PartialBlur === "false" &&
+                              config.FormPosition === "left" &&
+                              config.BackgroundImageHAlignment === "center"
 
-    readonly property bool rightright: config.HaveFormBackground == "true" &&
-                              config.PartialBlur == "false" &&
-                              config.FormPosition == "right" &&
-                              config.BackgroundImageHAlignment == "right"
+    readonly property bool rightright: config.HaveFormBackground === "true" &&
+                              config.PartialBlur === "false" &&
+                              config.FormPosition === "right" &&
+                              config.BackgroundImageHAlignment === "right"
 
-    readonly property bool rightcenter: config.HaveFormBackground == "true" &&
-                               config.PartialBlur == "false" &&
-                               config.FormPosition == "right" &&
-                               config.BackgroundImageHAlignment == "center"
+    readonly property bool rightcenter: config.HaveFormBackground === "true" &&
+                               config.PartialBlur === "false" &&
+                               config.FormPosition === "right" &&
+                               config.BackgroundImageHAlignment === "center"
 
 
     function toggleState() {
-        clock.state = clock.state == "hidden" ? "visible" : "hidden"
-        input.state = input.state == "hidden" ? "visible" : "hidden"
+        clock.state = clock.state === "hidden" ? "visible" : "hidden"
+        input.state = input.state === "hidden" ? "visible" : "hidden"
     }
 
     height: config.ScreenHeight || Screen.height
     width: config.ScreenWidth || Screen.ScreenWidth
 
-    LayoutMirroring.enabled: config.ForceRightToLeft == "true" ? true : Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.enabled: config.ForceRightToLeft === "true" ? true : Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
     padding: config.ScreenPadding
@@ -99,6 +99,7 @@ Pane {
         text: config.MainColor
         buttonText: config.MainColor
         window: config.BackgroundColor
+        placeholderText: Qt.rgba(1,1,1,0.2)
     }
 
     font {
@@ -125,18 +126,18 @@ Pane {
             height: parent.height
             anchors.centerIn: parent
 
-            horizontalAlignment: config.BackgroundImageHAlignment == "left" ?
+            horizontalAlignment: config.BackgroundImageHAlignment === "left" ?
                                  Image.AlignLeft :
-                                 config.BackgroundImageHAlignment == "right" ?
+                                 config.BackgroundImageHAlignment === "right" ?
                                  Image.AlignRight : Image.AlignHCenter
 
-            verticalAlignment: config.BackgroundImageVAlignment == "top" ?
+            verticalAlignment: config.BackgroundImageVAlignment === "top" ?
                                Image.AlignTop :
-                               config.BackgroundImageVAlignment == "bottom" ?
+                               config.BackgroundImageVAlignment === "bottom" ?
                                Image.AlignBottom : Image.AlignVCenter
 
             source: config.background || config.Background
-            fillMode: config.ScaleImageCropped == "true" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
+            fillMode: config.ScaleImageCropped === "true" ? Image.PreserveAspectCrop : Image.PreserveAspectFit
             asynchronous: true
             cache: true
             clip: true
@@ -153,16 +154,6 @@ Pane {
             y: input.y
             opacity: input.opacity
             anchors.fill: parent
-        }
-
-        Rectangle {
-            id: tintLayer
-            anchors.fill: parent
-            width: parent.width
-            height: parent.height
-            color: "black"
-            opacity: config.DimBackgroundImage
-            z: 1
         }
 
         Clock {
@@ -196,19 +187,6 @@ Pane {
                 leftMargin: 6
                 topMargin: 6
             }
-            // temp
-            transformOrigin: Item.TopLeft
-            transform: Scale { xScale: 0.5; yScale: 0.5 }
-        }
-    }
-
-    Text {
-        font.pixelSize: 80
-        id: testText
-        text: "test"
-        color: "red"
-        anchors {
-            bottom: parent.bottom
         }
     }
 }

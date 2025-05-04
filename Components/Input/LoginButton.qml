@@ -1,9 +1,9 @@
-import QtQuick 2.11
-import QtQuick.Controls 2.4
+import QtQuick
+import QtQuick.Controls
 
 Button {
     id: loginButton
-    enabled: config.AllowEmptyPassword == "true" || username.text != "" && password.text != ""
+    enabled: config.AllowEmptyPassword === "true" || username.text != "" && password.text != ""
     anchors.horizontalCenter: parent.horizontalCenter
     text: config.TranslateLogin || textConstants.login
     height: root.font.pointSize * 3

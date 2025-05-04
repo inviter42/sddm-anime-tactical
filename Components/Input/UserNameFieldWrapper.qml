@@ -1,9 +1,8 @@
-import QtQuick 2.11
+import QtQuick
 
 Item {
     id: usernameField
-    height: root.font.pointSize * 4.5
     width: parent.width / 2
+    height: root.font.pointSize * 4.5
     anchors.horizontalCenter: parent.horizontalCenter
-
 }

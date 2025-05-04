@@ -1,4 +1,4 @@
-import QtQuick 2.11
+import QtQuick
 
 Item {
     height: root.font.pointSize * 2.3

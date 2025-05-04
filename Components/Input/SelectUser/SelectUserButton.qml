@@ -1,5 +1,5 @@
-import QtQuick 2.11
-import QtQuick.Controls 2.4
+import QtQuick
+import QtQuick.Controls
 
 Button {
     id: usernameIcon
@@ -8,7 +8,7 @@ Button {
     anchors {
         left: parent.left
         verticalCenter: parent.verticalCenter
-        leftMargin: selectUser.height * 0.125
+        // leftMargin: selectUser.height * 0.125
     }
     icon {
         source: Qt.resolvedUrl(`${root.assetsURL}/User.svgz`)
@@ -16,5 +16,10 @@ Button {
         height: parent.height * 0.25
         color: root.palette.text
     }
+    display: AbstractButton.IconOnly
     enabled: false
+    background: Rectangle {
+        color: "transparent"
+        border.color: "transparent"
+    }
 }

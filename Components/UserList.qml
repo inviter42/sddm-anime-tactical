@@ -22,9 +22,8 @@
 // along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
 //
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Controls
 
 Item {
     id: usernameField
@@ -91,7 +90,7 @@ Item {
 
         popup: Popup {
             y: parent.height - username.height / 3
-            rightMargin: config.ForceRightToLeft == "true" ? usernameField.width / 2 : undefined
+            rightMargin: config.ForceRightToLeft === "true" ? usernameField.width / 2 : undefined
             width: usernameField.width
             implicitHeight: contentItem.implicitHeight
             padding: 10
@@ -107,16 +106,6 @@ Item {
             background: Rectangle {
                 radius: 10
                 color: root.palette.window
-                layer.enabled: true
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 0
-                    verticalOffset: 0
-                    radius: 100
-                    samples: 201
-                    cached: true
-                    color: "#88000000"
-                }
             }
 
             enter: Transition {
@@ -164,7 +153,7 @@ Item {
 
     TextField {
         id: username
-        text: config.ForceLastUser == "true" ? selectUser.currentText : null
+        text: config.ForceLastUser === "true" ? selectUser.currentText : null
         font.capitalization: Font.Capitalize
         anchors.centerIn: parent
         height: root.font.pointSize * 3

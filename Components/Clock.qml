@@ -22,8 +22,8 @@
 // along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
 //
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
+import QtQuick
+import QtQuick.Controls
 
 Column {
     id: clock
@@ -64,7 +64,7 @@ Column {
             text = new Date()
                 .toLocaleTimeString(
                      Qt.locale(config.Locale),
-                     config.HourFormat == "long"
+                     config.HourFormat === "long"
                         ? Locale.LongFormat
                         : config.HourFormat !== ""
                             ? config.HourFormat
@@ -86,7 +86,7 @@ Column {
             text = new Date()
                 .toLocaleDateString(
                      Qt.locale(config.Locale),
-                     config.DateFormat == "short"
+                     config.DateFormat === "short"
                         ? Locale.ShortFormat
                         : config.DateFormat !== ""
                             ? config.DateFormat

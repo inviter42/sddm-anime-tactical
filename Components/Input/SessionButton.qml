@@ -22,9 +22,8 @@
 // along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
 //
 
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Controls
 
 Item {
     id: sessionButton
@@ -45,26 +44,26 @@ Item {
         hoverEnabled: true
         anchors.left: parent.left
 
-        Keys.onPressed: {
-            if (event.key == Qt.Key_Up && loginButton.state != "enabled" && !popup.opened) {
+        Keys.onPressed: (event) => {
+            if (event.key === Qt.Key_Up && loginButton.state != "enabled" && !popup.opened) {
                 revealSecret.focus = true
                 revealSecret.state = "focused"
                 currentIndex = currentIndex + 1
             }
 
-            if (event.key == Qt.Key_Up && loginButton.state == "enabled" && !popup.opened) {
+            if (event.key === Qt.Key_Up && loginButton.state === "enabled" && !popup.opened) {
                 loginButton.focus = true
                 loginButton.state = "focused"
                 currentIndex = currentIndex + 1
             }
 
-            if (event.key == Qt.Key_Down && !popup.opened) {
+            if (event.key === Qt.Key_Down && !popup.opened) {
                 systemButtons.children[0].focus = true
                 systemButtons.children[0].state = "focused"
                 currentIndex = currentIndex - 1
             }
 
-            if ((event.key == Qt.Key_Left || event.key == Qt.Key_Right) && !popup.opened) {
+            if ((event.key === Qt.Key_Left || event.key === Qt.Key_Right) && !popup.opened) {
                 popup.open()
             }
         }
@@ -116,7 +115,7 @@ Item {
         popup: Popup {
             id: popupHandler
             y: parent.height - 1
-            x: config.ForceRightToLeft == "true" ? -loginButtonWidth + displayedItem.width : 0
+            x: config.ForceRightToLeft === "true" ? -loginButtonWidth + displayedItem.width : 0
             width: sessionButton.width
             implicitHeight: contentItem.implicitHeight
             padding: 10
@@ -132,16 +131,6 @@ Item {
             background: Rectangle {
                 radius: config.RoundCorners / 2
                 color: config.BackgroundColor
-                layer.enabled: true
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 0
-                    verticalOffset: 0
-                    radius: 20 * config.InterfaceShadowSize
-                    samples: 41 * config.InterfaceShadowSize
-                    cached: true
-                    color: Qt.hsla(0,0,0,config.InterfaceShadowOpacity)
-                }
             }
 
             enter: Transition {

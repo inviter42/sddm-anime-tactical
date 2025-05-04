@@ -1,5 +1,5 @@
-import QtQuick 2.11
-import QtQuick.Controls 2.4
+import QtQuick
+import QtQuick.Controls
 
 ComboBox {
     id: selectUser
@@ -13,6 +13,8 @@ ComboBox {
     textRole: "name"
     hoverEnabled: true
 
+    contentItem: Item {}
+
     delegate: SelectUserItemDelegate {}
 
     indicator: SelectUserButton {
@@ -23,7 +25,7 @@ ComboBox {
 
     background: Rectangle {
         color: "transparent"
-        border.color: "transparent"
+        border.width: 0
     }
 
     states: [

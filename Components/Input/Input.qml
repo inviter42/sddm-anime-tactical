@@ -22,7 +22,7 @@
 // along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
 //
 
-import QtQuick 2.11
+import QtQuick
 
 import "./SelectUser"
 
@@ -33,12 +33,15 @@ Column {
 
     property alias exposeSession: sessionSelect.exposeSession
 
+    spacing: 8
+
     states: [
         State {
             name: "hidden"
             PropertyChanges {
                 target: inputContainer
                 opacity: 0
+                visible: false
             }
         },
         State {
@@ -46,6 +49,7 @@ Column {
             PropertyChanges {
                 target: inputContainer
                 opacity: 1
+                visible: true
             }
         }
     ]
@@ -73,17 +77,17 @@ Column {
         SelectUserComboBox {
             id: selectUser
 
-            readonly property var popkey: config.ForceRightToLeft == "true" ? Qt.Key_Right : Qt.Key_Left
+            readonly property var popkey: config.ForceRightToLeft === "true" ? Qt.Key_Right : Qt.Key_Left
 
             onActivated: {
                 username.text = currentText
             }
 
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Down && !popup.opened)
+            Keys.onPressed: (event) => {
+                if (event.key === Qt.Key_Down && !popup.opened)
                     username.forceActiveFocus();
 
-                if ((event.key == Qt.Key_Up || event.key == popkey) && !popup.opened)
+                if ((event.key === Qt.Key_Up || event.key === popkey) && !popup.opened)
                     popup.open();
             }
 
@@ -108,8 +112,14 @@ Column {
 
         PasswordTextField {
             id: password
-            focus: config.ForcePasswordFocus == "true" && inputContainer.state == "visible"
+            focus: config.ForcePasswordFocus === "true" && inputContainer.state === "visible"
             onAccepted: loginButton.clicked()
+            Keys.onPressed: (event) => {
+                if (event.key === Qt.Key_X && event.modifiers & Qt.ControlModifier && !revealSecret.checked) {
+                    text = '' // ctrl+x clears the input
+                }
+            }
+
             KeyNavigation.down: revealSecret
         }
     }
@@ -140,9 +150,9 @@ Column {
 
         LoginButton {
             id: loginButton
-            enabled: config.AllowEmptyPassword == "true" || username.text != "" && password.text != ""
+            enabled: config.AllowEmptyPassword === "true" || username.text != "" && password.text != ""
 
-            onClicked: config.AllowBadUsernames == "false"
+            onClicked: config.AllowBadUsernames === "false"
                 ? sddm.login(username.text.toLowerCase(), password.text, sessionSelect.selectedSession)
                 : sddm.login(username.text, password.text, sessionSelect.selectedSession)
 
