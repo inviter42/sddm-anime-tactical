@@ -59,8 +59,10 @@ RowLayout {
                 height: 2
                 color: "transparent"
                 width: parent.width
-                border.width: parent.activeFocus ? 1 : 0
-                border.color: "transparent"
+                border {
+                    width: parent.activeFocus ? 1 : 0
+                    color: "transparent"
+                }
                 anchors.top: parent.bottom
             }
 
@@ -70,6 +72,13 @@ RowLayout {
             }
 
             Keys.onReturnPressed: clicked()
+            Keys.onEscapePressed: {
+                if (input.state === "visible") {
+                    root.toggleState()
+                }
+
+                systemButtonsFocusScope.focus = false
+            }
 
             KeyNavigation.up: exposedSession
             KeyNavigation.left: parent.children[index-1] ?? null
@@ -81,6 +90,7 @@ RowLayout {
                     PropertyChanges {
                         target: parent.children[index]
                         palette.buttonText: Qt.darker(root.palette.highlight, 1.1)
+                        icon.color: Qt.darker(root.palette.highlight, 1.1)
                     }
                     PropertyChanges {
                         target: parent.children[index].background
@@ -93,6 +103,7 @@ RowLayout {
                     PropertyChanges {
                         target: parent.children[index]
                         palette.buttonText: Qt.lighter(root.palette.highlight, 1.1)
+                        icon.color: Qt.lighter(root.palette.highlight, 1.1)
                     }
                     PropertyChanges {
                         target: parent.children[index].background
@@ -105,6 +116,7 @@ RowLayout {
                     PropertyChanges {
                         target: parent.children[index]
                         palette.buttonText: root.palette.highlight
+                        icon.color: root.palette.highlight
                     }
                     PropertyChanges {
                         target: parent.children[index].background
@@ -116,7 +128,7 @@ RowLayout {
             transitions: [
                 Transition {
                     PropertyAnimation {
-                        properties: "palette.buttonText, border.color"
+                        properties: "palette.buttonText, border.color, icon.color"
                         duration: 150
                     }
                 }

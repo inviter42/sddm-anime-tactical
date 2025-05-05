@@ -68,7 +68,10 @@ Column {
         }
     ]
 
-    Keys.onEscapePressed: root.toggleState()
+    Keys.onEscapePressed: {
+        inputFocusScope.focus = false
+        root.toggleState()
+    }
 
     UserNameFieldWrapper {
         id: usernameField

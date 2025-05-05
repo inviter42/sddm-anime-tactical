@@ -36,22 +36,14 @@ Pane {
     id: root
 
     /************************************ TODO ************************************/
-    /* 1. See into SystemButtons issue (sddm not showing them as available).
-        Need to in live env to make sure it's not a cli command issue.
 
-    /* 2. ✅ ctrl + x/c doesn't work specifically in Password field. It should work out of the box.
-        Something is eating inputs there.
+    /* 6. Find better place for dropdowns.
 
-    /* 3. ✅ Password placeholder text has a larger font size than user field.
+    /* 7. Add animations.
 
-    /* 4. Find better svg icons for SystemButton. Current ones are ugly and
-        unreadable without labels.
+    /* 8. Fix copyrights and other stale data
 
-    /* 5. Play with Input fields styles.
-
-    /* 6. Find better place for Session dropdown.
-
-    /* 7. Session dropdown can use better styling.
+    /* 9. Switching state back to Clock visible must return focus to the root
 
     /******************************************************************************/
 
@@ -83,6 +75,8 @@ Pane {
     function toggleState() {
         clock.state = clock.state === "hidden" ? "visible" : "hidden"
         input.state = input.state === "hidden" ? "visible" : "hidden"
+
+        inputFocusScope.focus = input.state === "visible"
     }
 
     height: config.ScreenHeight || Screen.height
@@ -109,9 +103,16 @@ Pane {
 
     focus: true
 
-    Keys.onSpacePressed: {
-        clock.state = "hidden"
-        input.state = "visible"
+    Keys.onPressed: (event) => {
+        if (event.key === Qt.Key_Space ||
+            event.key === Qt.Key_Return ||
+            event.key === Qt.Key_Enter) {
+                toggleState()
+        }
+    }
+
+    Component.onCompleted: {
+        console.log('test', input.parent)
     }
 
     SDDM.TextConstants { id: textConstants }
@@ -171,21 +172,30 @@ Pane {
             onClicked: toggleState()
         }
 
-        Input {
-            id: input
-            state: "hidden"
-            width: parent.width / 2.5
-            anchors.centerIn: parent
+        FocusScope {
+            id: inputFocusScope
+            anchors.fill: parent
+
+            Input {
+                id: input
+                state: "hidden"
+                width: parent.width / 2.5
+                anchors.centerIn: parent
+            }
         }
 
-        SystemButtons {
-            id: systemButtons
-            exposedSession: input.exposeSession
-            anchors {
-                left: parent.left
-                top: parent.top
-                leftMargin: 6
-                topMargin: 6
+        FocusScope {
+            id: systemButtonsFocusScope
+            anchors.fill: parent
+
+            SystemButtons {
+                id: systemButtons
+                exposedSession: input.exposeSession
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                    bottomMargin: height / 2
+                }
             }
         }
     }
