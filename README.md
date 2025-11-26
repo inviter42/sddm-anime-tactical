@@ -1,6 +1,7 @@
-Anime Tactical is based on SDDM Sugar Candy, created from scratch by Marian Arlt. In making of this theme the original code base has been refactored, all of the components moved to the modern Qt6 and configuration options has been reduced to the most necessary.
+### About
 
-<br/><br/>
+Anime Tactical is a SDDM theme based on Sugar Candy, created by Marian Arlt. The original code base has been refactored and moved to the modern Qt6 version, with a few redesigns and improvements to the UI.
+
 ### Installation  
 
 **From within KDE Plasma**  
@@ -43,7 +44,6 @@ including: [`Qt Quick Controls 2`](https://doc.qt.io/qt-6/qtquickcontrols-index.
 *(Fedora/Mageia/RHEL/CentOS)*  
 <pre>sudo dnf install sddm qt6-base qt6-qtdeclarative qt6-qtsvg qt5‑qtgraphicaleffects</pre>  
 
-<br/><br/>
 ### Configuration
 
 All of the customization options are available in the `theme.conf` file. All of the options have comments next to them, explaining what they do.
@@ -53,9 +53,8 @@ All of the customization options are available in the `theme.conf` file. All of 
 
 Note the `-qt6` at the end of the greeter - the theme will work only with this specific version!
 
-And as if that wouldn't still be enough you can **translate every single button and label** because SDDM still [needs your help](https://github.com/sddm/sddm/wiki/Localization) to make localization as complete as possible!  
+If required, translations for buttons and labels are available in the `theme.conf` as well.
 
-<br/><br/>
 ### Legal Notice
 
 This file is part of SDDM Anime Tactical.
@@ -81,7 +80,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SDDM Anime Tactical. If not, see <https://www.gnu.org/licenses/>
 
-<br/><br/>
 ### Extra credits
 
-Despite all of the UI changes and improvements this theme brings with it, a lot of heavy lifting has been done by Marian Arlt. If you like the theme, consider donating to her [PayPayl](https://www.paypal.me/marianarlt) account.
+Despite all of the UI changes and improvements this theme brings with it, a lot of heavy lifting has been done by Marian Arlt. If you like the theme, consider donating to her [PayPal](https://www.paypal.me/marianarlt) account.
