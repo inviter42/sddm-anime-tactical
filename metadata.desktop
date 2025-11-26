@@ -1,11 +1,11 @@
 [SddmGreeterTheme]
 Name=Anime Tactical
-Description=Temporary Description
-Author=inviter42
-Copyright=Copyright (C) 2025 inviter42
+Description=A modern take on the most popular SDDM theme.
+Author=Ivan Alantiev
+Copyright=Copyright (C) 2018–2020 Marian Arlt, 2025 Ivan Alantiev
 License=GPL-3.0-or-later
 Type=sddm-theme
-Version=0.1
+Version=1.0
 Website=https://github.com/inviter42/sddm-anime-tactical
 Screenshot=Previews/PartialBlur.png
 MainScript=Main.qml

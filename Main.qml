@@ -1,25 +1,26 @@
 //
-// This file is part of SDDM Sugar Candy.
+// This file is part of SDDM Anime Tactical.
 // A theme for the Simple Display Desktop Manager.
 //
 // Copyright (C) 2018–2020 Marian Arlt
+// Copyright (C) 2025 Ivan Alantiev
 //
-// SDDM Sugar Candy is free software: you can redistribute it and/or modify it
+// SDDM Anime Tactical is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the
 // Free Software Foundation, either version 3 of the License, or any later version.
 //
 // You are required to preserve this and any additional legal notices, either
 // contained in this file or in other files that you received along with
-// SDDM Sugar Candy that refer to the author(s) in accordance with
+// SDDM Anime Tactical that refer to the author(s) in accordance with
 // sections §4, §5 and specifically §7b of the GNU General Public License.
 //
-// SDDM Sugar Candy is distributed in the hope that it will be useful,
+// SDDM Anime Tactical is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
+// along with SDDM Anime Tactical. If not, see <https://www.gnu.org/licenses/>
 //
 
 import QtQuick
@@ -35,55 +36,17 @@ import "Components/Input"
 Pane {
     id: root
 
-    /************************************ TODO ************************************/
-
-    /* 6. Find better place for dropdowns.
-
-    /* 7. Add animations.
-
-    /* 8. Fix copyrights and other stale data
-
-    /* 9. Switching state back to Clock visible must return focus to the root
-
-    /******************************************************************************/
-
-
     readonly property url assetsURL: Qt.resolvedUrl("./Assets")
-
-
-    readonly property bool leftleft: config.HaveFormBackground === "true" &&
-                            config.PartialBlur === "false" &&
-                            config.FormPosition === "left" &&
-                            config.BackgroundImageHAlignment === "left"
-
-    readonly property bool leftcenter: config.HaveFormBackground === "true" &&
-                              config.PartialBlur === "false" &&
-                              config.FormPosition === "left" &&
-                              config.BackgroundImageHAlignment === "center"
-
-    readonly property bool rightright: config.HaveFormBackground === "true" &&
-                              config.PartialBlur === "false" &&
-                              config.FormPosition === "right" &&
-                              config.BackgroundImageHAlignment === "right"
-
-    readonly property bool rightcenter: config.HaveFormBackground === "true" &&
-                               config.PartialBlur === "false" &&
-                               config.FormPosition === "right" &&
-                               config.BackgroundImageHAlignment === "center"
-
 
     function toggleState() {
         clock.state = clock.state === "hidden" ? "visible" : "hidden"
-        input.state = input.state === "hidden" ? "visible" : "hidden"
+        inputs.state = inputs.state === "hidden" ? "visible" : "hidden"
 
-        inputFocusScope.focus = input.state === "visible"
+        inputFocusScope.focus = inputs.state === "visible"
     }
 
     height: config.ScreenHeight || Screen.height
     width: config.ScreenWidth || Screen.ScreenWidth
-
-    LayoutMirroring.enabled: config.ForceRightToLeft === "true" ? true : Qt.application.layoutDirection === Qt.RightToLeft
-    LayoutMirroring.childrenInherit: true
 
     padding: config.ScreenPadding
 
@@ -91,14 +54,18 @@ Pane {
         button: "transparent"
         highlight: config.AccentColor
         text: config.MainColor
-        buttonText: config.MainColor
-        window: config.BackgroundColor
+        buttonText: {
+            config.OverrideLoginButtonTextColor === ""
+                    ? "white"
+                    : config.OverrideLoginButtonTextColor
+        }
+        window: "#292c2e"
         placeholderText: Qt.rgba(1,1,1,0.2)
     }
 
     font {
         family: config.Font
-        pointSize: config.FontSize !== "" ? config.FontSize : parseInt(height / 80)
+        pointSize: parseInt(height / 80)
     }
 
     focus: true
@@ -109,10 +76,6 @@ Pane {
             event.key === Qt.Key_Enter) {
                 toggleState()
         }
-    }
-
-    Component.onCompleted: {
-        console.log('test', input.parent)
     }
 
     SDDM.TextConstants { id: textConstants }
@@ -151,9 +114,9 @@ Pane {
             radius: config.BlurRadius
             samples: config.BlurRadius * 2 + 1
             cached: true
-            x: input.x
-            y: input.y
-            opacity: input.opacity
+            x: inputs.x
+            y: inputs.y
+            opacity: inputs.opacity
             anchors.fill: parent
         }
 
@@ -176,10 +139,10 @@ Pane {
             id: inputFocusScope
             anchors.fill: parent
 
-            Input {
-                id: input
+            Inputs {
+                id: inputs
                 state: "hidden"
-                width: parent.width / 2.5
+                width: parent.width / 5
                 anchors.centerIn: parent
             }
         }
@@ -190,7 +153,7 @@ Pane {
 
             SystemButtons {
                 id: systemButtons
-                exposedSession: input.exposeSession
+                exposedSession: inputs.exposeSession
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     bottom: parent.bottom

@@ -1,25 +1,26 @@
 //
-// This file is part of SDDM Sugar Candy.
+// This file is part of SDDM Anime Tactical.
 // A theme for the Simple Display Desktop Manager.
 //
 // Copyright (C) 2018–2020 Marian Arlt
+// Copyright (C) 2025 Ivan Alantiev
 //
-// SDDM Sugar Candy is free software: you can redistribute it and/or modify it
+// SDDM Anime Tactical is free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by the
 // Free Software Foundation, either version 3 of the License, or any later version.
 //
 // You are required to preserve this and any additional legal notices, either
 // contained in this file or in other files that you received along with
-// SDDM Sugar Candy that refer to the author(s) in accordance with
+// SDDM Anime Tactical that refer to the author(s) in accordance with
 // sections §4, §5 and specifically §7b of the GNU General Public License.
 //
-// SDDM Sugar Candy is distributed in the hope that it will be useful,
+// SDDM Anime Tactical is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with SDDM Sugar Candy. If not, see <https://www.gnu.org/licenses/>
+// along with SDDM Anime Tactical. If not, see <https://www.gnu.org/licenses/>
 //
 
 import QtQuick
@@ -28,12 +29,35 @@ import QtQuick.Controls
 
 RowLayout {
 
-    property var suspend: ["Suspend", config.TranslateSuspend || textConstants.suspend, sddm.canSuspend]
-    property var hibernate: ["Hibernate", config.TranslateHibernate || textConstants.hibernate, sddm.canHibernate]
-    property var reboot: ["Reboot", config.TranslateReboot || textConstants.reboot, sddm.canReboot]
-    property var shutdown: ["Shutdown", config.TranslateShutdown || textConstants.shutdown, sddm.canPowerOff]
-
     property ComboBox exposedSession
+
+    readonly property var suspend: {
+        "resource": "Suspend",
+        "text": config.TranslateSuspend || textConstants.suspend,
+        "visibility": sddm.canSuspend,
+        "action": sddm.suspend
+    }
+
+    readonly property var hibernate: {
+        "resource": "Hibernate",
+        "text": config.TranslateHibernate || textConstants.hibernate,
+        "visibility": sddm.canHibernate,
+        "action": sddm.hibernate
+    }
+
+    readonly property var reboot: {
+        "resource": "Reboot",
+        "text": config.TranslateReboot || textConstants.reboot,
+        "visibility": sddm.canReboot,
+        "action": sddm.reboot
+    }
+
+    readonly property var shutdown: {
+        "resource": "Shutdown",
+        "text": config.TranslateShutdown || textConstants.shutdown,
+        "visibility": sddm.canPowerOff,
+        "action": sddm.powerOff
+    }
 
     spacing: root.font.pointSize
 
@@ -42,17 +66,17 @@ RowLayout {
         model: [suspend, hibernate, reboot, shutdown]
 
         RoundButton {
-            text: modelData[1]
+            text: modelData.text
             font.pointSize: root.font.pointSize * 0.8
             Layout.alignment: Qt.AlignHCenter
             icon {
-                source: modelData ? Qt.resolvedUrl(`${root.assetsURL}/${modelData[0]}.svgz`) : ""
+                source: modelData ? Qt.resolvedUrl(`${root.assetsURL}/${modelData.resource}.svgz`) : ""
                 height: 2 * Math.round((root.font.pointSize * 3) / 2)
                 width: 2 * Math.round((root.font.pointSize * 3) / 2)
                 color: root.palette.text
             }
             display: AbstractButton.TextUnderIcon
-            visible: config.ForceHideSystemButtons !== "true" && modelData[2]
+            visible: config.ForceHideSystemButtons !== "true" && modelData.visibility
             hoverEnabled: true
             palette.buttonText: root.palette.text
             background: Rectangle {
@@ -66,14 +90,23 @@ RowLayout {
                 anchors.top: parent.bottom
             }
 
+            focus: true
+
             onClicked: {
                 parent.forceActiveFocus()
-                index === 0 ? sddm.suspend() : index === 1 ? sddm.hibernate() : index === 2 ? sddm.reboot() : sddm.powerOff()
+                modelData.action()
             }
 
-            Keys.onReturnPressed: clicked()
+            Keys.onEnterPressed: {
+                clicked()
+            }
+
+            Keys.onReturnPressed: {
+                clicked()
+            }
+
             Keys.onEscapePressed: {
-                if (input.state === "visible") {
+                if (inputs.state === "visible") {
                     root.toggleState()
                 }
 
