@@ -53,12 +53,8 @@ Pane {
     palette {
         button: "transparent"
         highlight: config.AccentColor
-        text: config.MainColor
-        buttonText: {
-            config.OverrideLoginButtonTextColor === ""
-                    ? "white"
-                    : config.OverrideLoginButtonTextColor
-        }
+        text: "white"
+        buttonText: "white"
         window: "#292c2e"
         placeholderText: Qt.rgba(1,1,1,0.2)
     }

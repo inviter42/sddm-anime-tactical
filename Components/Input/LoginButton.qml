@@ -37,7 +37,13 @@ Button {
 
     contentItem: Text {
         text: parent.text
-        color: loginButton.enabled? root.palette.buttonText : "white"
+        color: {
+            loginButton.enabled
+                ? config.OverrideLoginButtonTextColor === ""
+                    ? root.palette.buttonText
+                    : config.OverrideLoginButtonTextColor
+                : "white"
+        }
         font.pointSize: root.font.pointSize
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
