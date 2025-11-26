@@ -82,4 +82,6 @@ along with SDDM Anime Tactical. If not, see <https://www.gnu.org/licenses/>
 
 ### Extra credits
 
+Background art by T5-茨舞.
+
 Despite all of the UI changes and improvements this theme brings with it, a lot of heavy lifting has been done by Marian Arlt. If you like the theme, consider donating to her [PayPal](https://www.paypal.me/marianarlt) account.
